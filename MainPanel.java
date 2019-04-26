@@ -7,10 +7,13 @@ import java.awt.*;
 
 public class MainPanel extends JPanel {
     //Main panel which holds all the other panels
-    GamePanel gamePanel = new GamePanel();
-    ControlPanel controlPanel = new ControlPanel();
+    private GamePanel gamePanel;
+    private ControlPanel controlPanel;
 
     public MainPanel(){
+        this.gamePanel = new GamePanel();
+        this.controlPanel = new ControlPanel(this.gamePanel);
+
         setLayout(new BorderLayout());
         setPreferredSize(new Dimension(1000, 600));
         setBackground(Color.gray);
