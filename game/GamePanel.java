@@ -16,6 +16,8 @@ public class GamePanel extends JPanel {
     private final int cols = 50;
 
     ArrayList<GameCell> gameCells = new ArrayList<>();
+    int[][] gameCellsArr;
+
     public GamePanel(){
         setPreferredSize(new Dimension(1000, 500));
 
@@ -28,6 +30,8 @@ public class GamePanel extends JPanel {
         createGame();
         //when play is pressed, get the alive and dead cells and store them somewhere
         //getAliveAndDeadCells();
+        this.gameCellsArr = boolArrListToIntArr(this.gameCells);
+        //printArray(this.gameCellsArr);
     }
     private void createGame(){
         //Create the game, add game cells for each row and col
@@ -53,6 +57,25 @@ public class GamePanel extends JPanel {
                 //Also add each gamecell to the arraylist to store them
                 this.gameCells.add(temp);
             }
+        }
+    }
+    private int[][] boolArrListToIntArr(ArrayList<GameCell> gameCells){
+        int[][] arr = new int[rows][cols];
+
+        var aListCounter = 0;
+        for(var x = 0; x < rows; x++){
+            for (var y = 0; y < cols; y++){
+                arr[x][y] = gameCells.get(aListCounter).isAlive() ? 1 : 0;
+            }
+        }
+        return arr;
+    }
+    private void printArray(int[][] arr){
+        for(var x = 0; x < rows; x++){
+            for (var y = 0; y < cols; y++){
+                System.out.print(arr[x][y]);
+            }
+            System.out.println();
         }
     }
 }
