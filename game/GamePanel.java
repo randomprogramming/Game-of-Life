@@ -5,11 +5,13 @@ import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class GamePanel extends JPanel {
     //Panel where the game happens
     private GridLayout layout = new GridLayout();
 
+    private AtomicBoolean isPaused = new AtomicBoolean();
     //rows = x axis
     private final int rows = 25;
     //cols = y axis
@@ -18,7 +20,11 @@ public class GamePanel extends JPanel {
     private ArrayList<GameCell> gameCells = new ArrayList<>();
     private int[][] gameCellsArr;
 
-    public GamePanel(){
+    private Thread threadObject;
+
+    public GamePanel(Thread threadObject){
+        this.threadObject = threadObject;
+
         setPreferredSize(new Dimension(1000, 500));
 
         this.layout.setRows(this.rows);
@@ -58,8 +64,32 @@ public class GamePanel extends JPanel {
         }
     }
     public void startGame(){
+        this.isPaused.set(false);
         this.gameCellsArr = boolArrListToIntArr(this.gameCells);
         printArray(this.gameCellsArr);
+
+        Runnable runnable = new Runnable() {
+            @Override
+            public void run() {
+                while(true) {
+                    if (!isPaused.get()) {
+                        //this runs while the game is running
+
+                    } else {
+                        //this runs while the game is paused
+                        
+                    }
+                }
+            }
+        };
+        threadObject = new Thread(runnable);
+        threadObject.start();
+    }
+    public void pauseGame(){
+        this.isPaused.set(true);
+    }
+    public void unpauseGame(){
+        this.isPaused.set(false);
     }
     private int[][] boolArrListToIntArr(ArrayList<GameCell> gameCells){
         int[][] arr = new int[rows][cols];
@@ -67,6 +97,7 @@ public class GamePanel extends JPanel {
         var aListCounter = 0;
         for(var x = 0; x < rows; x++){
             for (var y = 0; y < cols; y++){
+                //Go through the whole array list and if the cell is alive, write 1, otherwise write 0
                 arr[x][y] = gameCells.get(aListCounter).isAlive() ? 1 : 0;
                 aListCounter++;
             }
@@ -74,6 +105,7 @@ public class GamePanel extends JPanel {
         return arr;
     }
     private void printArray(int[][] arr){
+        //used for debugging, remove later
         for(var x = 0; x < rows; x++){
             for (var y = 0; y < cols; y++){
                 System.out.print(arr[x][y]);
