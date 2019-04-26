@@ -9,8 +9,6 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 public class GamePanel extends JPanel {
     //Panel where the game happens
-    private GridLayout layout = new GridLayout();
-
     private AtomicBoolean isPaused = new AtomicBoolean();
     //rows = x axis
     private final int rows = 25;
@@ -27,11 +25,12 @@ public class GamePanel extends JPanel {
 
         setPreferredSize(new Dimension(1000, 500));
 
-        this.layout.setRows(this.rows);
-        this.layout.setColumns(this.cols);
-        this.layout.setHgap(1);
-        this.layout.setVgap(1);
-        setLayout(this.layout);
+        GridLayout layout = new GridLayout();
+        layout.setRows(this.rows);
+        layout.setColumns(this.cols);
+        layout.setHgap(1);
+        layout.setVgap(1);
+        setLayout(layout);
 
         createGame();
         //when play is pressed, get the alive and dead cells and store them somewhere
@@ -66,7 +65,6 @@ public class GamePanel extends JPanel {
     public void startGame(){
         this.isPaused.set(false);
         this.gameCellsArr = boolArrListToIntArr(this.gameCells);
-        printArray(this.gameCellsArr);
 
         Runnable runnable = new Runnable() {
             @Override
@@ -75,9 +73,30 @@ public class GamePanel extends JPanel {
                     if (!isPaused.get()) {
                         //this runs while the game is running
 
-                    } else {
-                        //this runs while the game is paused
-                        
+                        gameCellsArr = boolArrListToIntArr(gameCells);
+                        var aListCounter = 0;
+                        for(var x = 0; x < rows; x++){
+                            for(var y = 0; y < cols; y++){
+                                int aliveN = checkNeighbours(gameCellsArr, x, y);
+
+                                //game logic
+                                if(gameCellsArr[x][y] == 1 && aliveN < 2){
+                                    gameCells.get(aListCounter).setCondition(false);
+                                } else if(gameCellsArr[x][y] == 1 && (aliveN == 2 || aliveN == 3)){
+                                    gameCells.get(aListCounter).setCondition(true);
+                                } else if(gameCellsArr[x][y] == 1 && aliveN > 3){
+                                    gameCells.get(aListCounter).setCondition(false);
+                                } else if(gameCellsArr[x][y] == 0 && aliveN == 3){
+                                    gameCells.get(aListCounter).setCondition(true);
+                                }
+                                aListCounter++;
+                            }
+                        }
+                    }
+                    try{
+                        //Sleep the thread after each iteration to add a delay between the draws
+                        threadObject.sleep(1000);
+                    }catch(InterruptedException e){
                     }
                 }
             }
@@ -104,13 +123,24 @@ public class GamePanel extends JPanel {
         }
         return arr;
     }
-    private void printArray(int[][] arr){
-        //used for debugging, remove later
-        for(var x = 0; x < rows; x++){
-            for (var y = 0; y < cols; y++){
-                System.out.print(arr[x][y]);
+    private int checkNeighbours(int[][] arr, int x, int y){
+        var aliveN = 0;
+
+        for (var xSmall = -1; xSmall <= 1; xSmall++) {
+            for (var ySmall = -1; ySmall <= 1; ySmall++) {
+                //we take a x and y and check its neighbours
+                //this is in a try catch to prevent index out of bounds error, which will happen
+                //with the cells on the border
+                try {
+                    int tempN = arr[x + xSmall][y + ySmall];
+                    aliveN += tempN;
+                }
+                catch (ArrayIndexOutOfBoundsException e) {
+                }
             }
-            System.out.println();
         }
+        //we have to subtract the cell itself because we're only counting neighbours
+        aliveN -= arr[x][y];
+        return aliveN;
     }
 }

@@ -15,10 +15,10 @@ public class ControlPanel extends JPanel {
 
     private GamePanel gamePanel;
 
-    Thread threadObject;
+    private Thread threadObject;
 
-    AtomicBoolean isPaused = new AtomicBoolean();
-    AtomicBoolean gameStarted = new AtomicBoolean();
+    private AtomicBoolean isPaused = new AtomicBoolean();
+    private AtomicBoolean gameStarted = new AtomicBoolean();
 
     public ControlPanel(GamePanel gamePanel, Thread threadObject){
         this.gamePanel = gamePanel;
@@ -27,7 +27,6 @@ public class ControlPanel extends JPanel {
         setPreferredSize(new Dimension(1000, 75));
         setBackground(Color.WHITE);
 
-        this.isPaused.set(false);
         this.gameStarted.set(false);
 
         this.playButton.addActionListener(new ActionListener() {
