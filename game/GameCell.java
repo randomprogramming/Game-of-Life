@@ -16,16 +16,7 @@ public class GameCell extends JPanel {
         this.id = counter;
         counter++;
         setBackground(Color.BLACK);
-    }/*
-    @Override
-    protected void paintComponent(Graphics g){
-        if(alive){
-            setBackground(Color.WHITE);
-        }
-        else{
-            setBackground(Color.BLACK);
-        }
-    }*/
+    }
     public void updateCell(){
         this.alive = !this.alive;
         trypaint();
