@@ -10,7 +10,7 @@ public class MainPanel extends JPanel {
     private GamePanel gamePanel;
     private ControlPanel controlPanel;
 
-    Thread threadObject = new Thread();
+    private Thread threadObject = new Thread();
 
     public MainPanel(){
         this.gamePanel = new GamePanel(this.threadObject);

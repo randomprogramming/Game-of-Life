@@ -33,8 +33,6 @@ public class GamePanel extends JPanel {
         setLayout(layout);
 
         createGame();
-        //when play is pressed, get the alive and dead cells and store them somewhere
-        //getAliveAndDeadCells();
     }
     private void createGame(){
         //Create the game, add game cells for each row and col
@@ -54,7 +52,6 @@ public class GamePanel extends JPanel {
                     @Override
                     public void mouseDragged(MouseEvent e) {
                         super.mouseDragged(e);
-                        temp.updateCell();
                     }
                 });
                 //Also add each gamecell to the arraylist to store them
@@ -95,7 +92,7 @@ public class GamePanel extends JPanel {
                     }
                     try{
                         //Sleep the thread after each iteration to add a delay between the draws
-                        threadObject.sleep(1000);
+                        threadObject.sleep(250);
                     }catch(InterruptedException e){
                     }
                 }
