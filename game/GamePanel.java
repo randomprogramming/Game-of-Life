@@ -11,9 +11,9 @@ public class GamePanel extends JPanel {
     //Panel where the game happens
     private AtomicBoolean isPaused = new AtomicBoolean();
     //rows = x axis
-    private final int rows = 25;
+    private int rows = 25;
     //cols = y axis
-    private final int cols = 50;
+    private int cols = 50;
 
     private ArrayList<GameCell> gameCells = new ArrayList<>();
     private int[][] gameCellsArr;
@@ -38,24 +38,24 @@ public class GamePanel extends JPanel {
         //Create the game, add game cells for each row and col
         for(var x = 0; x < this.rows; x++){
             for(var y = 0; y < this.cols; y++){
-                GameCell temp = new GameCell();
-                add(temp);
+                GameCell cell = new GameCell();
+                add(cell);
                 //give each game cell a mouse listener to detect when it is pressed
-                temp.addMouseListener(new MouseAdapter() {
+                cell.addMouseListener(new MouseAdapter() {
                     @Override
                     public void mousePressed(MouseEvent e) {
                         super.mousePressed(e);
-                        temp.updateCell();
+                        cell.updateCell();
                     }
                 });
-                temp.addMouseListener(new MouseAdapter() {
+                cell.addMouseListener(new MouseAdapter() {
                     @Override
                     public void mouseDragged(MouseEvent e) {
                         super.mouseDragged(e);
                     }
                 });
                 //Also add each gamecell to the arraylist to store them
-                this.gameCells.add(temp);
+                this.gameCells.add(cell);
             }
         }
     }
@@ -69,7 +69,6 @@ public class GamePanel extends JPanel {
                 while(true) {
                     if (!isPaused.get()) {
                         //this runs while the game is running
-
                         gameCellsArr = boolArrListToIntArr(gameCells);
                         var aListCounter = 0;
                         for(var x = 0; x < rows; x++){
@@ -101,6 +100,11 @@ public class GamePanel extends JPanel {
         threadObject = new Thread(runnable);
         threadObject.start();
     }
+    public void restartGame(){
+        for(GameCell cell : this.gameCells){
+            cell.setCondition(false);
+        }
+    }
     public void pauseGame(){
         this.isPaused.set(true);
     }
@@ -129,8 +133,8 @@ public class GamePanel extends JPanel {
                 //this is in a try catch to prevent index out of bounds error, which will happen
                 //with the cells on the border
                 try {
-                    int tempN = arr[x + xSmall][y + ySmall];
-                    aliveN += tempN;
+                    int cellN = arr[x + xSmall][y + ySmall];
+                    aliveN += cellN;
                 }
                 catch (ArrayIndexOutOfBoundsException e) {
                 }
