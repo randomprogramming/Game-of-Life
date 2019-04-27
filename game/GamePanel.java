@@ -15,6 +15,8 @@ public class GamePanel extends JPanel {
     //cols = y axis
     private int cols = 50;
 
+    private int gameSpeed = 500;
+
     private ArrayList<GameCell> gameCells = new ArrayList<>();
     private int[][] gameCellsArr;
 
@@ -91,7 +93,7 @@ public class GamePanel extends JPanel {
                     }
                     try{
                         //Sleep the thread after each iteration to add a delay between the draws
-                        threadObject.sleep(250);
+                        threadObject.sleep(gameSpeed);
                     }catch(InterruptedException e){
                     }
                 }
@@ -100,16 +102,19 @@ public class GamePanel extends JPanel {
         threadObject = new Thread(runnable);
         threadObject.start();
     }
-    public void restartGame(){
-        for(GameCell cell : this.gameCells){
-            cell.setCondition(false);
-        }
-    }
     public void pauseGame(){
         this.isPaused.set(true);
     }
     public void unpauseGame(){
         this.isPaused.set(false);
+    }
+    public void restartGame(){
+        for(GameCell cell : this.gameCells){
+            cell.setCondition(false);
+        }
+    }
+    public void setGameSpeed(int val){
+        this.gameSpeed = val;
     }
     private int[][] boolArrListToIntArr(ArrayList<GameCell> gameCells){
         int[][] arr = new int[rows][cols];
