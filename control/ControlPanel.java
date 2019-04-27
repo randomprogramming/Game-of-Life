@@ -16,17 +16,17 @@ public class ControlPanel extends JPanel {
     private JButton pauseButton = new JButton("Pause");
     private JButton restartButton = new JButton("Restart");
     private JButton setGameSizeButton = new JButton("Set size");
-    private JTextField rowsField = new JTextField();
-    private JTextField colsField = new JTextField();
+    private JTextField rowsField = new JTextField(4);
+    private JTextField colsField = new JTextField(4);
     private JSlider gameSpeedSlider = new JSlider(JSlider.HORIZONTAL, 0, 2000, 100);
     private JLabel gameStatus = new JLabel();
     private JLabel gameSpeedSliderText = new JLabel();
     private JLabel fastText = new JLabel();
     private JLabel slowText = new JLabel();
+    private JLabel setGameSizeText = new JLabel();
 
     private GamePanel gamePanel;
 
-    private AtomicBoolean isPaused = new AtomicBoolean();
     private AtomicBoolean gameStarted = new AtomicBoolean();
 
     public ControlPanel(GamePanel gamePanel){
@@ -61,9 +61,11 @@ public class ControlPanel extends JPanel {
         this.slowText.setText("Slow");
         add(this.slowText);
 
-        //add(this.setGameSizeButton);
-        //add(this.rowsField);
-        //add(this.colsField);
+        this.setGameSizeText.setText("Set game size (rows/columns)");
+        add(this.setGameSizeText);
+        add(this.rowsField);
+        add(this.colsField);
+        add(this.setGameSizeButton);
 
         setLayoutSettings(layout);
         setLayout(layout);
@@ -116,6 +118,10 @@ public class ControlPanel extends JPanel {
         layout.putConstraint(SpringLayout.NORTH, this.gameSpeedSlider, 20, SpringLayout.NORTH, this.gameSpeedSliderText);
         layout.putConstraint(SpringLayout.NORTH, this.fastText, 7, SpringLayout.SOUTH, this.gameSpeedSlider);
         layout.putConstraint(SpringLayout.NORTH, this.slowText, 7, SpringLayout.SOUTH, this.gameSpeedSlider);
+        layout.putConstraint(SpringLayout.NORTH, this.setGameSizeText, 7, SpringLayout.NORTH, this);
+        layout.putConstraint(SpringLayout.NORTH, this.rowsField, 7, SpringLayout.SOUTH, this.setGameSizeText);
+        layout.putConstraint(SpringLayout.NORTH, this.colsField, 7, SpringLayout.SOUTH, this.setGameSizeText);
+        layout.putConstraint(SpringLayout.NORTH, this.setGameSizeButton, 7, SpringLayout.SOUTH, this.setGameSizeText);
 
         layout.putConstraint(SpringLayout.WEST, this.playButton, 15, SpringLayout.WEST, this);
         layout.putConstraint(SpringLayout.WEST, this.pauseButton, 15, SpringLayout.EAST, this.playButton);
@@ -125,5 +131,9 @@ public class ControlPanel extends JPanel {
         layout.putConstraint(SpringLayout.EAST, this.gameSpeedSlider, -15, SpringLayout.EAST, this);
         layout.putConstraint(SpringLayout.WEST, this.fastText, 0, SpringLayout.WEST, this.gameSpeedSliderText);
         layout.putConstraint(SpringLayout.EAST, this.slowText, -7, SpringLayout.EAST, this.gameSpeedSlider);
+        layout.putConstraint(SpringLayout.WEST, this.setGameSizeText, 35, SpringLayout.EAST, this.restartButton);
+        layout.putConstraint(SpringLayout.WEST, this.rowsField, 35, SpringLayout.EAST, this.restartButton);
+        layout.putConstraint(SpringLayout.WEST, this.colsField, 15, SpringLayout.EAST, this.rowsField);
+        layout.putConstraint(SpringLayout.WEST, this.setGameSizeButton, 15, SpringLayout.EAST, this.colsField);
     }
 }
