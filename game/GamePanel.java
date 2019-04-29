@@ -20,26 +20,23 @@ public class GamePanel extends JPanel {
     private ArrayList<GameCell> gameCells = new ArrayList<>();
     private int[][] gameCellsArr;
 
-    private Thread threadObject;
+    private Thread threadObject = new Thread();
 
     private GridLayout layout;
 
-    public GamePanel(Thread threadObject){
-        this.threadObject = threadObject;
-
+    public GamePanel(){
         setPreferredSize(new Dimension(1000, 500));
-
-        setLayoutSettings();
-
+        
         createGame();
     }
     public void createGame(){
         //Create the game, add game cells for each row and col
         setLayoutSettings();
         this.gameCells = new ArrayList<>();
+        removeAll();
 
-        for(var x = 0; x < this.rows; x++){
-            for(var y = 0; y < this.cols; y++){
+        for(int x = 0; x < this.rows; x++){
+            for(int y = 0; y < this.cols; y++){
                 GameCell cell = new GameCell();
                 add(cell);
                 //give each game cell a mouse listener to detect when it is pressed
@@ -72,9 +69,9 @@ public class GamePanel extends JPanel {
                     if (!isPaused.get()) {
                         //this runs while the game is running
                         gameCellsArr = boolArrListToIntArr(gameCells);
-                        var aListCounter = 0;
-                        for(var x = 0; x < rows; x++){
-                            for(var y = 0; y < cols; y++){
+                        int aListCounter = 0;
+                        for(int x = 0; x < rows; x++){
+                            for(int y = 0; y < cols; y++){
                                 int aliveN = checkNeighbours(gameCellsArr, x, y);
 
                                 //game logic
@@ -133,9 +130,9 @@ public class GamePanel extends JPanel {
     private int[][] boolArrListToIntArr(ArrayList<GameCell> gameCells){
         int[][] arr = new int[rows][cols];
 
-        var aListCounter = 0;
-        for(var x = 0; x < rows; x++){
-            for (var y = 0; y < cols; y++){
+        int aListCounter = 0;
+        for(int x = 0; x < rows; x++){
+            for (int y = 0; y < cols; y++){
                 //Go through the whole array list and if the cell is alive, write 1, otherwise write 0
                 arr[x][y] = gameCells.get(aListCounter).isAlive() ? 1 : 0;
                 aListCounter++;
@@ -144,10 +141,10 @@ public class GamePanel extends JPanel {
         return arr;
     }
     private int checkNeighbours(int[][] arr, int x, int y){
-        var aliveN = 0;
+        int aliveN = 0;
 
-        for (var xSmall = -1; xSmall <= 1; xSmall++) {
-            for (var ySmall = -1; ySmall <= 1; ySmall++) {
+        for (int xSmall = -1; xSmall <= 1; xSmall++) {
+            for (int ySmall = -1; ySmall <= 1; ySmall++) {
                 //we take a x and y and check its neighbours
                 //this is in a try catch to prevent index out of bounds error, which will happen
                 //with the cells on the border

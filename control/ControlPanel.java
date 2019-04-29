@@ -28,10 +28,10 @@ public class ControlPanel extends JPanel {
     private GamePanel gamePanel;
 
     private AtomicBoolean gameStarted = new AtomicBoolean();
-    private Thread threadObject;
-    public ControlPanel(GamePanel gamePanel, Thread threadObject){
+
+    public ControlPanel(GamePanel gamePanel){
         this.gamePanel = gamePanel;
-this.threadObject = threadObject;
+
         setPreferredSize(new Dimension(1000, 75));
         setBackground(Color.WHITE);
 
@@ -61,7 +61,7 @@ this.threadObject = threadObject;
         this.slowText.setText("Slow");
         add(this.slowText);
 
-        this.setGameSizeText.setText("Set game size (rows/columns)(doesn't work right now)");
+        this.setGameSizeText.setText("Set game size (rows/columns)");
         add(this.setGameSizeText);
         add(this.rowsField);
         add(this.colsField);
@@ -103,7 +103,7 @@ this.threadObject = threadObject;
             public void actionPerformed(ActionEvent e) {
                 //get the rows and cols that the user entered, and change the game size according to that
                 //pause the game because changing the game size while it's running can break things
-                /*
+
                 gamePanel.pauseGame();
                 setTextPaused();
 
@@ -132,7 +132,8 @@ this.threadObject = threadObject;
                 }
                 if(isPossibleSize){
                     gamePanel.createGame();
-                }*/
+                    gamePanel.updateUI();
+                }
             }
         });
     }
