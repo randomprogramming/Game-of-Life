@@ -28,10 +28,10 @@ public class ControlPanel extends JPanel {
     private GamePanel gamePanel;
 
     private AtomicBoolean gameStarted = new AtomicBoolean();
-
-    public ControlPanel(GamePanel gamePanel){
+    private Thread threadObject;
+    public ControlPanel(GamePanel gamePanel, Thread threadObject){
         this.gamePanel = gamePanel;
-
+this.threadObject = threadObject;
         setPreferredSize(new Dimension(1000, 75));
         setBackground(Color.WHITE);
 
@@ -61,7 +61,7 @@ public class ControlPanel extends JPanel {
         this.slowText.setText("Slow");
         add(this.slowText);
 
-        this.setGameSizeText.setText("Set game size (rows/columns)");
+        this.setGameSizeText.setText("Set game size (rows/columns)(doesn't work right now)");
         add(this.setGameSizeText);
         add(this.rowsField);
         add(this.colsField);
@@ -96,6 +96,43 @@ public class ControlPanel extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 gamePanel.restartGame();
+            }
+        });
+        this.setGameSizeButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                //get the rows and cols that the user entered, and change the game size according to that
+                //pause the game because changing the game size while it's running can break things
+                /*
+                gamePanel.pauseGame();
+                setTextPaused();
+
+                boolean isPossibleSize = true;
+                try{
+                    int rows = Integer.parseInt(rowsField.getText());
+                    if(rows <= 0){
+                        throw new NumberFormatException();
+                    }
+                    gamePanel.setGameSizeRow(rows);
+                }
+                catch(NumberFormatException error){
+                    isPossibleSize = false;
+                    rowsField.setText("error");
+                }
+                try{
+                    int cols = Integer.parseInt(colsField.getText());
+                    if(cols <= 0){
+                        throw new NumberFormatException();
+                    }
+                    gamePanel.setGameSizeCol(cols);
+                }
+                catch(NumberFormatException error){
+                    isPossibleSize = false;
+                    colsField.setText("error");
+                }
+                if(isPossibleSize){
+                    gamePanel.createGame();
+                }*/
             }
         });
     }

@@ -14,7 +14,7 @@ public class MainPanel extends JPanel {
 
     public MainPanel(){
         this.gamePanel = new GamePanel(this.threadObject);
-        this.controlPanel = new ControlPanel(this.gamePanel);
+        this.controlPanel = new ControlPanel(this.gamePanel, this.threadObject);
 
         setLayout(new BorderLayout());
         setPreferredSize(new Dimension(1000, 600));

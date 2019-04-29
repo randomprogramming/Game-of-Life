@@ -15,29 +15,29 @@ public class GamePanel extends JPanel {
     //cols = y axis
     private int cols = 50;
 
-    private int gameSpeed = 500;
+    private int gameSpeed;
 
     private ArrayList<GameCell> gameCells = new ArrayList<>();
     private int[][] gameCellsArr;
 
     private Thread threadObject;
 
+    private GridLayout layout;
+
     public GamePanel(Thread threadObject){
         this.threadObject = threadObject;
 
         setPreferredSize(new Dimension(1000, 500));
 
-        GridLayout layout = new GridLayout();
-        layout.setRows(this.rows);
-        layout.setColumns(this.cols);
-        layout.setHgap(1);
-        layout.setVgap(1);
-        setLayout(layout);
+        setLayoutSettings();
 
         createGame();
     }
-    private void createGame(){
+    public void createGame(){
         //Create the game, add game cells for each row and col
+        setLayoutSettings();
+        this.gameCells = new ArrayList<>();
+
         for(var x = 0; x < this.rows; x++){
             for(var y = 0; y < this.cols; y++){
                 GameCell cell = new GameCell();
@@ -60,10 +60,10 @@ public class GamePanel extends JPanel {
                 this.gameCells.add(cell);
             }
         }
+        this.gameCellsArr = boolArrListToIntArr(this.gameCells);
     }
     public void startGame(){
         this.isPaused.set(false);
-        this.gameCellsArr = boolArrListToIntArr(this.gameCells);
 
         Runnable runnable = new Runnable() {
             @Override
@@ -113,8 +113,22 @@ public class GamePanel extends JPanel {
             cell.setCondition(false);
         }
     }
+    public void setGameSizeRow(int row){
+        this.rows = row;
+    }
+    public void setGameSizeCol(int col){
+        this.cols = col;
+    }
     public void setGameSpeed(int val){
         this.gameSpeed = val;
+    }
+    private void setLayoutSettings(){
+        this.layout = new GridLayout();
+        this.layout.setRows(this.rows);
+        this.layout.setColumns(this.cols);
+        this.layout.setHgap(1);
+        this.layout.setVgap(1);
+        setLayout(this.layout);
     }
     private int[][] boolArrListToIntArr(ArrayList<GameCell> gameCells){
         int[][] arr = new int[rows][cols];
